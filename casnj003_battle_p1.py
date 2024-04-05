@@ -39,24 +39,15 @@ game_counter = 0
 game_scores = [0,0,0]    # [Win, Draw, Loss]
 dragon_kills = 0
 
+# The below list definitions all follow the alignment:
+#       [0, 0, 0, 0, 0, 0]
+#        0  1  2  3  4  5
+# Element [0] of each list will not be utilised and is there
+# to keep the alignment of 1 = 1, 2 = 2, etc.
 player_roll = [0, 0, 0, 0, 0]
-player_die_counter = [0, 0, 0, 0, 0]
+player_die_counter = [0, 0, 0, 0, 0, 0, 0]
 dragon_roll = [0, 0, 0, 0, 0]
-dragon_die_counter = [0, 0, 0, 0, 0]
-
-# Populating the player roll
-index = 0
-while index < len(player_roll):
-    roll = random.randint(1,6)
-    player_roll[index] = roll
-    index += 1
-
-# Populating the dragon roll
-index = 0
-while index < len(dragon_roll):
-    roll = random.randint(1,6)
-    dragon_roll[index] = roll
-    index += 1
+dragon_die_counter = [0, 0, 0, 0, 0, 0, 0]
 
 playing = input("Would you like to play Dragon Battleground [y|n]? ")
 
@@ -77,7 +68,33 @@ while playing == "y":
             first_play = False
             round_counter = int(round_counter)
 
+    # Populating the player roll
+    index = 0
+    while index < len(player_roll):
+        roll = random.randint(1,6)
+        player_roll[index] = roll
+        player_die_counter[roll] += 1
+        index += 1
+
+    print("Player rolled:")
+    dice.display_dice(player_roll)
+    
+    # Get sum of dice and determine damage dealt
+
 '''
+    # Populating the dragon roll
+    index = 0
+    while index < len(dragon_roll):
+        roll = random.randint(1,6)
+        dragon_roll[index] = roll
+        dragon_die_counter[roll] += 1
+        index += 1
+
+    print(f"Player Die Counter: {player_die_counter}")
+    print(f"Dragon Die Counter: {dragon_die_counter}")
+    break
+
+
 while playing == "y":
     pass
 else:
