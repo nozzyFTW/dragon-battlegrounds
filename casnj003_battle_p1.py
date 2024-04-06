@@ -79,7 +79,21 @@ while playing == "y":
     print("Player rolled:")
     dice.display_dice(player_roll)
     
-    # Get sum of dice and determine damage dealt
+    # Get sum of dice
+    player_damage = 0
+    for value in player_roll:
+        player_damage += value
+    
+    # Determine Damage
+    # Three of a Kind
+    if 3 in player_die_counter:
+        if player_die_counter[1] == 3 or player_die_counter[3] == 3 or player_die_counter[5] == 3:
+            player_damage = 0
+        else:
+            player_damage *= 3
+    # Pair
+    elif 2 in player_die_counter:
+        player_damage *= 2
 
 '''
     # Populating the dragon roll
