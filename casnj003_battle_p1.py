@@ -60,6 +60,13 @@ if playing == "n":
 elif playing != "y":
     print("Please enter either 'y' or 'n'.")
 
+while playing != "y" and playing != "n":
+    playing = input("Would you like to play Dragon Battleground [y|n]? ")
+    if playing == "n":
+        print("No worries... you live to battle another day... :)")
+    elif playing != "y":
+        print("Please enter either 'y' or 'n'.")
+
 first_play = True
 while playing == "y":
     if first_play:
@@ -166,7 +173,27 @@ while playing == "y":
                 print("** Draw! **")
 
             playing = input("Play again [y|n]? ")
-    if player_health == 0:
+
+    # If player dead dragon wins - end  
+    # If dragon dead player wins - end
+    # no more rounds
+        # If player > dragon - player wins - end
+        # Else - dragon wins - end
+
+    rounds_played += 1
+    if player_health == 0 or (player_health > dragon_health and rounds_played > rounds_selected):
+        print("-- End of battle --")
+        print("** Player wins! **")
+        play_again_prompt = True
+    elif dragon_health == 0 or (dragon_health > player_health and rounds_played > rounds_selected):
+        print("-- End of battle --")
+        print("** Dragon wins! **")
+        play_again_prompt = True
+
+    if play_again_prompt:
+        play_again = input("Play again [y|n]? ")
+        
+            
         
 
 
