@@ -74,6 +74,7 @@ while playing == "y":
         dragon_health = 100
         rounds_played = 1
 
+        game_counter += 1
         rounds_selected = input("\nPlease enter number of battle rounds: ")
 
         while not rounds_selected.isdigit() or (int(rounds_selected) < 1 or int(rounds_selected) > 5):
@@ -83,7 +84,7 @@ while playing == "y":
             first_play = False
             rounds_selected = int(rounds_selected)
 
-        print(f"\n\n-- Battle -- Plater versus Dragon: {rounds_selected} rounds --", end="\n\n\n")
+        print(f"\n\n-- Battle -- Player versus Dragon: {rounds_selected} rounds --", end="\n\n\n")
     
     print(f"Round: {rounds_played}", end="\n\n")
 
@@ -106,7 +107,7 @@ while playing == "y":
     
     # Determine Damage
     # Three of a Kind
-    if 3 in player_die_counter:
+    if 3 in player_die_counter or 4 in player_die_counter or 5 in player_die_counter:
         if player_die_counter[1] == 3 or player_die_counter[3] == 3 or player_die_counter[5] == 3:
             player_damage = 0
             print("-- Swing and miss - no damage inflicted!")
@@ -144,7 +145,7 @@ while playing == "y":
     
     # Determine Damage
     # Three of a Kind
-    if 3 in dragon_die_counter:
+    if 3 in dragon_die_counter or 4 in dragon_die_counter or 5 in dragon_die_counter:
         if dragon_die_counter[1] == 3 or dragon_die_counter[3] == 3 or dragon_die_counter[5] == 3:
             dragon_damage = 0
             print("-- Swing and miss - no damage inflicted!")
@@ -169,11 +170,13 @@ while playing == "y":
     play_again_prompt = False
     if dragon_health == 0 or (player_health > dragon_health and rounds_played > rounds_selected):
         print("\n-- End of battle --", end="\n\n")
+        print("-- Dragon has died!  :(", end="\n\n")
         print("** Player wins! **", end="\n\n")
         game_scores[0] += 1
         play_again_prompt = True
     elif player_health == 0 or (dragon_health > player_health and rounds_played > rounds_selected):
         print("-- End of battle --", end="\n\n")
+        print("-- Player has died!  :(", end="\n\n")
         print("** Dragon wins! **", end="\n\n")
         game_scores[2] += 1
         play_again_prompt = True
@@ -215,3 +218,11 @@ You played {game_counter} games
 Thanks for playing!
 
           ''')
+    print("Game Summary")
+    print("============")
+    print(f"You played {game_counter} games")
+    print(f"\t|--> Games won:\t {game_scores[0]}")
+    print(f"\t|--> Games lost:\t {game_scores[2]}")
+    print(f"\t|--> Games drawn:\t {game_scores[1]}")
+    print(f"Dragons killed:\t {dragon_kills}")
+    print("\nThanks for playing!")
