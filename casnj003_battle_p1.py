@@ -38,50 +38,54 @@ print("This is my own work as defined by the\nUniversity's Academic Misconduct P
 game_counter = 0
 game_scores = [0,0,0]    # [Win, Draw, Loss]
 dragon_kills = 0
-rounds_played = 1
 
-player_health = 100
-dragon_health = 100
 
-# The below list definitions all follow the alignment:
-#       [0, 0, 0, 0, 0, 0]
-#        0  1  2  3  4  5
-# Element [0] of each list will not be utilised and is there
-# to keep the alignment of 1 = 1, 2 = 2, etc.
-player_roll = [0, 0, 0, 0, 0]
-player_die_counter = [0, 0, 0, 0, 0, 0, 0]
-dragon_roll = [0, 0, 0, 0, 0]
-dragon_die_counter = [0, 0, 0, 0, 0, 0, 0]
+
 
 playing = input("Would you like to play Dragon Battleground [y|n]? ")
 
 if playing == "n":
-    print("No worries... you live to battle another day... :)")
+    print("\n\nNo worries... you live to battle another day... :)")
 elif playing != "y":
     print("Please enter either 'y' or 'n'.")
 
 while playing != "y" and playing != "n":
     playing = input("Would you like to play Dragon Battleground [y|n]? ")
     if playing == "n":
-        print("No worries... you live to battle another day... :)")
+        print("\n\nNo worries... you live to battle another day... :)")
     elif playing != "y":
         print("Please enter either 'y' or 'n'.")
 
 first_play = True
 while playing == "y":
+    player_roll = [0, 0, 0, 0, 0]
+    dragon_roll = [0, 0, 0, 0, 0]
+    
+    # The below Die Counters follow the alignment:
+    #       [0, 0, 0, 0, 0, 0, 0]
+    #        0  1  2  3  4  5  6
+    # Element [0] of each list will not be utilised and is there
+    # to keep the alignment of 1 = 1, 2 = 2, etc.
+    player_die_counter = [0, 0, 0, 0, 0, 0, 0]
+    dragon_die_counter = [0, 0, 0, 0, 0, 0, 0]
+    
     if first_play:
-        rounds_selected = input("Please enter number of battle rounds: ")
+        player_health = 100
+        dragon_health = 100
+        rounds_played = 1
+
+        rounds_selected = input("\nPlease enter number of battle rounds: ")
 
         while not rounds_selected.isdigit() or (int(rounds_selected) < 1 or int(rounds_selected) > 5):
-            print("Must be between 1-5 inclusive.", end="\n\n")
-            rounds_selected = input("Please enter number of battle rounds: ")
+            print("Must be between 1-5 inclusive.")
+            rounds_selected = input("\nPlease enter number of battle rounds: ")
         else:
             first_play = False
             rounds_selected = int(rounds_selected)
 
-        print(f"-- Battle -- Plater versus Dragon: {rounds_selected} rounds --")
+        print(f"\n\n-- Battle -- Plater versus Dragon: {rounds_selected} rounds --", end="\n\n\n")
     
-    print(f"Round: {rounds_played}")
+    print(f"Round: {rounds_played}", end="\n\n")
 
     # Populating the player roll
     index = 0
@@ -159,58 +163,55 @@ while playing == "y":
         player_health = 0
 
     print(f"> Player - Damage taken: {dragon_damage} - Current health: {player_health}")
-    print(f"> Dragon - Damage taken: {player_damage} - Current health: {dragon_health}")
-    
-    if player_health > 0:
-        rounds_played += 1
-        if rounds_played > rounds_selected:
-            playing = "n"
-            if player_health > dragon_damage:
-                print("** Player wins! **")
-            elif dragon_damage > player_damage:
-                print("** Dragon wins! **")
-            else:
-                print("** Draw! **")
-
-            playing = input("Play again [y|n]? ")
-
-    # If player dead dragon wins - end  
-    # If dragon dead player wins - end
-    # no more rounds
-        # If player > dragon - player wins - end
-        # Else - dragon wins - end
+    print(f"> Dragon - Damage taken: {player_damage} - Current health: {dragon_health}", end="\n\n")
 
     rounds_played += 1
-    if player_health == 0 or (player_health > dragon_health and rounds_played > rounds_selected):
-        print("-- End of battle --")
-        print("** Player wins! **")
+    play_again_prompt = False
+    if dragon_health == 0 or (player_health > dragon_health and rounds_played > rounds_selected):
+        print("\n-- End of battle --", end="\n\n")
+        print("** Player wins! **", end="\n\n")
+        game_scores[0] += 1
         play_again_prompt = True
-    elif dragon_health == 0 or (dragon_health > player_health and rounds_played > rounds_selected):
-        print("-- End of battle --")
-        print("** Dragon wins! **")
+    elif player_health == 0 or (dragon_health > player_health and rounds_played > rounds_selected):
+        print("-- End of battle --", end="\n\n")
+        print("** Dragon wins! **", end="\n\n")
+        game_scores[2] += 1
+        play_again_prompt = True
+    elif player_health == dragon_health and rounds_played > rounds_selected:
+        print("** Draw! ** ", end="\n\n")
+        game_scores[1] += 1
         play_again_prompt = True
 
     if play_again_prompt:
-        play_again = input("Play again [y|n]? ")
-        
-            
-        
+        play_again = input("\nPlay again [y|n]? ")
 
+        if play_again == "y":
+            first_play = True
+        elif play_again == "n":
+            playing = "n"
+        elif play_again != "y":
+            print("Please enter either 'y' or 'n'.")
 
-
-
-'''
+        while play_again != "y" and play_again != "n":
+            play_again = input("Play again [y|n]? ")
+            if play_again == "y":
+                first_play = True
+                game_counter += 1
+            elif play_again == "n":
+                playing = "n"
+            elif play_again != "y":
+                print("Please enter either 'y' or 'n'.")
 else:
-    print(f''
-            Game Summary
-            ============
-            You played {game_counter} games
-              |--> Games won:\t {game_scores[0]}
-              |--> Games lost:\t {game_scores[2]}
-              |--> Games drawn:\t {game_scores[1]}
-              |--> Dragons killed:\t {dragon_kills}
+    print(f'''
+          
+Game Summary
+============
+You played {game_counter} games
+  |--> Games won:\t {game_scores[0]}
+  |--> Games lost:\t {game_scores[2]}
+  |--> Games drawn:\t {game_scores[1]}
+  |--> Dragons killed:\t {dragon_kills}
 
-            Thanks for playing!
-          '')
+Thanks for playing!
 
-'''
+          ''')
