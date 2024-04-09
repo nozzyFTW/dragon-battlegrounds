@@ -7,25 +7,7 @@
 # Academic Misconduct policy.
 #
 
-# Dice module provided - display_dice() displays the dice face values
-## import dice
-
-## Prompt player to enter num rounds (between 1 and 5 - range(1,5))
-
-## playerHP = 100, dragonHP = 100 - resets each round
-
-## roll 5 dice each
-
-## display rolls and damage dealt in round
-    ## sum of 5 die values is damage inflicted
-        ## If PAIR rolled, hit damage times 2 (sum * 2)
-        ## If THREE OF A KIND rolled, critical hit (sum * 3)
-        ## If 3 ONES, 3 THREES, or 3 FIVES rolled, miss (0 damage dealt)
-        ## Else, damage == sum
-
-## Display Damage Taken and Health
-
-# Imports the provided dice.py Module.
+# Imports the provided dice.py module, as well as the built-in Random Module
 import dice, random
 
 # Displays my details as per the PSP Assessment Requirements.
@@ -34,49 +16,51 @@ print("Author\t : Noah Casey")
 print("Email ID : casnj003")
 print("This is my own work as defined by the\nUniversity's Academic Misconduct Policy.", end="\n\n")
 
-# Variable Definitions
-game_counter = 0
+game_counter = 0         # Keeps count of the amount of games played in succession (using Play Again)
 game_scores = [0,0,0]    # [Win, Draw, Loss]
-dragon_kills = 0
-
-
-
+dragon_kills = 0         # Keeps count of the amount of times the Player kills the Dragon
 
 playing = input("Would you like to play Dragon Battleground [y|n]? ")
 
 if playing == "n":
     print("\n\nNo worries... you live to battle another day... :)")
 elif playing != "y":
-    print("Please enter either 'y' or 'n'.")
+    print("Please enter either 'y' or 'n'.", end="\n\n")
 
 while playing != "y" and playing != "n":
     playing = input("Would you like to play Dragon Battleground [y|n]? ")
     if playing == "n":
         print("\n\nNo worries... you live to battle another day... :)")
     elif playing != "y":
-        print("Please enter either 'y' or 'n'.")
+        print("Please enter either 'y' or 'n'.", end="\n\n")
 
-first_play = True
+first_play = True   # Sets the whether it is the first run through of the game
 while playing == "y":
-    player_roll = [0, 0, 0, 0, 0]
-    dragon_roll = [0, 0, 0, 0, 0]
+    player_roll = [0, 0, 0, 0, 0]   # List containing the Player's randomly generated dice rolls
+    dragon_roll = [0, 0, 0, 0, 0]   # List containing the Dragon's randomly generated dice rolls
     
     # The below Die Counters follow the alignment:
     #       [0, 0, 0, 0, 0, 0, 0]
     #        0  1  2  3  4  5  6
     # Element [0] of each list will not be utilised and is there
-    # to keep the alignment of 1 = 1, 2 = 2, etc.
-    player_die_counter = [0, 0, 0, 0, 0, 0, 0]
+    # to keep the alignment Die Number == 1 == Element [1]
+    #
+    # Each element will be added to, according to the amount of times
+    # it appears in the appropriate Roll list
+    player_die_counter = [0, 0, 0, 0, 0, 0, 0] 
     dragon_die_counter = [0, 0, 0, 0, 0, 0, 0]
     
+    # Checks if this is the first run of the game
+    #    TRUE = New Game    FALSE = Next Round
     if first_play:
-        player_health = 100
-        dragon_health = 100
-        rounds_played = 1
+        player_health = 100    # Sets the Player's health to 100
+        dragon_health = 100    # Sets the Dragon's health to 100
+        rounds_played = 1      # Sets the round number to 1
 
         game_counter += 1
         rounds_selected = input("\nPlease enter number of battle rounds: ")
 
+        # Data validation ensuring the the user has inputted an integer between 1 and 5 inclusive
         while not rounds_selected.isdigit() or (int(rounds_selected) < 1 or int(rounds_selected) > 5):
             print("Must be between 1-5 inclusive.")
             rounds_selected = input("\nPlease enter number of battle rounds: ")
@@ -114,12 +98,13 @@ while playing == "y":
         else:
             player_damage *= 3
             print("-- Critical hit - triple the damage!")
+
     # Pair
     elif 2 in player_die_counter:
         player_damage *= 2
         print("-- Hit - double the damage!")
     
-    # IF no Pairs of Three of a Kinds, only print "-- Player has dealt..."
+    # IF no Pair or Three of a Kind, only print "-- Player has dealt..."
     print(f"-- Player has dealt {player_damage} damage", end="\n\n")
     dragon_health -= player_damage
 
@@ -152,12 +137,13 @@ while playing == "y":
         else:
             dragon_damage *= 3
             print("-- Critical hit - triple the damage!")
+
     # Pair
     elif 2 in dragon_die_counter:
         dragon_damage *= 2
         print("-- Hit - double the damage!")
     
-    # IF no Pairs of Three of a Kinds, only print "-- Dragon has dealt..."
+    # IF no Pair or Three of a Kind, only print "-- Dragon has dealt..."
     print(f"-- Dragon has dealt {dragon_damage} damage", end="\n\n")
     player_health -= dragon_damage
     if player_health < 0:
@@ -167,23 +153,36 @@ while playing == "y":
     print(f"> Dragon - Damage taken: {player_damage} - Current health: {dragon_health}", end="\n\n")
 
     rounds_played += 1
+
+    # Is used to check if the game has finished and whether
+    # to prompt if the user would like to play again
     play_again_prompt = False
-    if dragon_health == 0 or (player_health > dragon_health and rounds_played > rounds_selected):
+    if dragon_health == 0:
         print("\n-- End of battle --", end="\n\n")
         print("-- Dragon has died!  :(", end="\n\n")
         print("** Player wins! **", end="\n\n")
         game_scores[0] += 1
         play_again_prompt = True
-    elif player_health == 0 or (dragon_health > player_health and rounds_played > rounds_selected):
+    elif player_health == 0:
         print("-- End of battle --", end="\n\n")
         print("-- Player has died!  :(", end="\n\n")
         print("** Dragon wins! **", end="\n\n")
         game_scores[2] += 1
         play_again_prompt = True
-    elif player_health == dragon_health and rounds_played > rounds_selected:
-        print("** Draw! ** ", end="\n\n")
-        game_scores[1] += 1
-        play_again_prompt = True
+    else:
+        if rounds_played > rounds_selected:
+            if player_health > dragon_health:
+                print("\n-- End of battle --", end="\n\n")
+                print("** Player wins! **", end="\n\n")
+                game_scores[0] += 1
+            elif dragon_health > player_health:
+                print("\n-- End of battle --", end="\n\n")
+                print("** Dragon wins! **", end="\n\n")
+                game_scores[2] += 1
+            elif player_health == dragon_health:
+                print("** Draw! ** ", end="\n\n")
+                game_scores[1] += 1
+            play_again_prompt = True
 
     if play_again_prompt:
         play_again = input("\nPlay again [y|n]? ")
@@ -205,24 +204,11 @@ while playing == "y":
             elif play_again != "y":
                 print("Please enter either 'y' or 'n'.")
 else:
-    print(f'''
-          
-Game Summary
-============
-You played {game_counter} games
-  |--> Games won:\t {game_scores[0]}
-  |--> Games lost:\t {game_scores[2]}
-  |--> Games drawn:\t {game_scores[1]}
-  |--> Dragons killed:\t {dragon_kills}
-
-Thanks for playing!
-
-          ''')
-    print("Game Summary")
+    print("\nGame Summary")
     print("============")
     print(f"You played {game_counter} games")
-    print(f"\t|--> Games won:\t {game_scores[0]}")
+    print(f"\t|--> Games won:\t\t {game_scores[0]}")
     print(f"\t|--> Games lost:\t {game_scores[2]}")
     print(f"\t|--> Games drawn:\t {game_scores[1]}")
-    print(f"Dragons killed:\t {dragon_kills}")
+    print(f"\t|--> Dragons killed:\t {dragon_kills}")
     print("\nThanks for playing!")
