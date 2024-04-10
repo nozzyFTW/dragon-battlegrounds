@@ -2,7 +2,7 @@
 # File: casnj003_battle_p1.py
 # Author: Noah Casey
 # Email Id: casnj003
-# Description: Dragon Battleground (created without the use of functions).
+# Description: Dragon Battleground (created with the use of functions).
 # This is my own work as defined by the University's
 # Academic Misconduct policy.
 #
@@ -10,14 +10,56 @@
 # Imports the provided dice.py module, as well as the built-in Random Module
 import dice, random
 
-# Displays my details as per the PSP Assessment Requirements.
-print("File\t : casnj003_battle_p1.py")
-print("Author\t : Noah Casey")
-print("This is my own work as defined by the\nUniversity's Academic Misconduct Policy.", end="\n\n")
-
 game_counter = 0         # Keeps count of the amount of games played in succession (using Play Again)
 game_scores = [0,0,0]    # [Win, Draw, Loss]
 dragon_kills = 0         # Keeps count of the amount of times the Player kills the Dragon
+
+# Displays my details as per the PSP Assessment Requirements.
+def display_details():
+    print("File\t : casnj003_battle_p1.py")
+    print("Author\t : Noah Casey")
+    print("Email ID : casnj003")
+    print("This is my own work as defined by the\nUniversity's Academic Misconduct Policy.", end="\n\n")
+
+def roll_die():
+    return random.randint(1,6)
+
+def roll_damage(max_dice):
+        roll_list = []
+        for index in range(max_dice):
+             roll_list.append(roll_die())
+
+        return roll_list
+
+
+def calculate_damage(roll):
+    damage = 0
+    for value in roll:
+        damage += value
+
+    die_counter = [0, 0, 0, 0, 0, 0, 0]
+    for die in roll:
+         die_counter[die] += 1
+    print(die_counter)
+    print("[0, 1, 2, 3, 4, 5, 6]")
+
+    if 3 in die_counter or 4 in die_counter or 5 in die_counter:
+        if die_counter[1] == 3 or die_counter[3] == 3 or die_counter[5] == 3:
+            damage = 0
+            print("-- Swing and miss - no damage inflicted!")
+        else:
+            damage *= 3
+            print("-- Critical hit - triple the damage!")
+
+    # Pair
+    elif 2 in die_counter:
+        damage *= 2
+        print("-- Hit - double the damage!")
+
+    return damage
+
+
+display_details()
 
 playing = input("Would you like to play Dragon Battleground [y|n]? ")
 
@@ -33,24 +75,8 @@ while playing != "y" and playing != "n":
     elif playing != "y":
         print("Please enter either 'y' or 'n'.", end="\n\n")
 
-first_play = True   # Sets the whether it is the first run through of the game
+first_play = True
 while playing == "y":
-    player_roll = [0, 0, 0, 0, 0]   # List containing the Player's randomly generated dice rolls
-    dragon_roll = [0, 0, 0, 0, 0]   # List containing the Dragon's randomly generated dice rolls
-    
-    # The below Die Counters follow the alignment:
-    #       [0, 0, 0, 0, 0, 0, 0]
-    #        0  1  2  3  4  5  6
-    # Element [0] of each list will not be utilised and is there
-    # to keep the alignment Die Number == 1 == Element [1]
-    #
-    # Each element will be added to, according to the amount of times
-    # it appears in the appropriate Roll list
-    player_die_counter = [0, 0, 0, 0, 0, 0, 0] 
-    dragon_die_counter = [0, 0, 0, 0, 0, 0, 0]
-    
-    # Checks if this is the first run of the game
-    #    TRUE = New Game    FALSE = Next Round
     if first_play:
         player_health = 100    # Sets the Player's health to 100
         dragon_health = 100    # Sets the Dragon's health to 100
@@ -71,86 +97,34 @@ while playing == "y":
     
     print(f"Round: {rounds_played}", end="\n\n")
 
-    # Populating the player roll
-    index = 0
-    while index < len(player_roll):
-        roll = random.randint(1,6)
-        player_roll[index] = roll
-        player_die_counter[roll] += 1
-        index += 1
-
+    player_roll = roll_damage(5)
     print("Player rolled:")
     dice.display_dice(player_roll)
     print("\n")
-    
-    # Get sum of dice
-    player_damage = 0
-    for value in player_roll:
-        player_damage += value
-    
-    # Determine Damage
-    # Three of a Kind
-    if 3 in player_die_counter or 4 in player_die_counter or 5 in player_die_counter:
-        if player_die_counter[1] == 3 or player_die_counter[3] == 3 or player_die_counter[5] == 3:
-            player_damage = 0
-            print("-- Swing and miss - no damage inflicted!")
-        else:
-            player_damage *= 3
-            print("-- Critical hit - triple the damage!")
 
-    # Pair
-    elif 2 in player_die_counter:
-        player_damage *= 2
-        print("-- Hit - double the damage!")
-    
-    # IF no Pair or Three of a Kind, only print "-- Player has dealt..."
+    player_damage = calculate_damage(player_roll)
+
     print(f"-- Player has dealt {player_damage} damage", end="\n\n")
     dragon_health -= player_damage
 
     if dragon_health < 0:
         dragon_health = 0
-
-    # Populating the dragon roll
-    index = 0
-    while index < len(dragon_roll):
-        roll = random.randint(1,6)
-        dragon_roll[index] = roll
-        dragon_die_counter[roll] += 1
-        index += 1
-
+    
+    dragon_roll = roll_damage(5)
     print("Dragon rolled:")
     dice.display_dice(dragon_roll)
     print("\n")
 
-    # Get sum of dice
-    dragon_damage = 0
-    for value in dragon_roll:
-        dragon_damage += value
+    dragon_damage = calculate_damage(dragon_roll)
     
-    # Determine Damage
-    # Three of a Kind
-    if 3 in dragon_die_counter or 4 in dragon_die_counter or 5 in dragon_die_counter:
-        if dragon_die_counter[1] == 3 or dragon_die_counter[3] == 3 or dragon_die_counter[5] == 3:
-            dragon_damage = 0
-            print("-- Swing and miss - no damage inflicted!")
-        else:
-            dragon_damage *= 3
-            print("-- Critical hit - triple the damage!")
-
-    # Pair
-    elif 2 in dragon_die_counter:
-        dragon_damage *= 2
-        print("-- Hit - double the damage!")
-    
-    # IF no Pair or Three of a Kind, only print "-- Dragon has dealt..."
-    print(f"-- Dragon has dealt {dragon_damage} damage", end="\n\n")
+    print(f"-- Dragon dealt {dragon_damage} damage", end="\n\n")
     player_health -= dragon_damage
+
     if player_health < 0:
         player_health = 0
-
+    
     print(f"> Player - Damage taken: {dragon_damage} - Current health: {player_health}")
     print(f"> Dragon - Damage taken: {player_damage} - Current health: {dragon_health}", end="\n\n")
-
     rounds_played += 1
 
     # Is used to check if the game has finished and whether
