@@ -24,7 +24,7 @@ def display_details():
 def roll_die():
     return random.randint(1,6)
 
-def roll_damage(max_dice):
+def roll_damage(max_dice: int) -> list:
         roll_list = []
         for index in range(max_dice):
              roll_list.append(roll_die())
@@ -32,16 +32,12 @@ def roll_damage(max_dice):
         return roll_list
 
 
-def calculate_damage(roll):
+def calculate_damage(roll: list) -> int:
     damage = 0
+    die_counter = [0, 0, 0, 0, 0, 0, 0]
     for value in roll:
         damage += value
-
-    die_counter = [0, 0, 0, 0, 0, 0, 0]
-    for die in roll:
-         die_counter[die] += 1
-    print(die_counter)
-    print("[0, 1, 2, 3, 4, 5, 6]")
+        die_counter[value] += 1
 
     if 3 in die_counter or 4 in die_counter or 5 in die_counter:
         if die_counter[1] == 3 or die_counter[3] == 3 or die_counter[5] == 3:
@@ -71,7 +67,7 @@ elif playing != "y":
 while playing != "y" and playing != "n":
     playing = input("Would you like to play Dragon Battleground [y|n]? ")
     if playing == "n":
-        print("\n\nNo worries... you live to battle another day... :)")
+        print("\n\nNo worries... you live to battle another day... :\)")
     elif playing != "y":
         print("Please enter either 'y' or 'n'.", end="\n\n")
 
@@ -132,20 +128,20 @@ while playing == "y":
     play_again_prompt = False
     if dragon_health == 0 and player_health == 0:
         print("\n-- End of battle --", end="\n\n")
-        print("-- Player has died!  :(", end="\n\n")
-        print("-- Dragon has died!  :(", end="\n\n")
+        print("-- Player has died!  :\(", end="\n\n")
+        print("-- Dragon has died!  :\(", end="\n\n")
         print("** Draw! **", end="\n\n")
         game_scores[1] += 1
         play_again_prompt = True
     elif dragon_health == 0:
         print("\n-- End of battle --", end="\n\n")
-        print("-- Dragon has died!  :(", end="\n\n")
+        print("-- Dragon has died!  :\(", end="\n\n")
         print("** Player wins! **", end="\n\n")
         game_scores[0] += 1
         play_again_prompt = True
     elif player_health == 0:
         print("-- End of battle --", end="\n\n")
-        print("-- Player has died!  :(", end="\n\n")
+        print("-- Player has died!  :\(", end="\n\n")
         print("** Dragon wins! **", end="\n\n")
         game_scores[2] += 1
         play_again_prompt = True
