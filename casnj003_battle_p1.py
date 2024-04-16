@@ -90,7 +90,7 @@ while playing == "y":
     
     # Determine Damage
     # Three of a Kind
-    if 3 in player_die_counter or 4 in player_die_counter or 5 in player_die_counter:
+    if 3 in player_die_counter:
         if player_die_counter[1] == 3 or player_die_counter[3] == 3 or player_die_counter[5] == 3:
             player_damage = 0
             print("-- Swing and miss - no damage inflicted!")
