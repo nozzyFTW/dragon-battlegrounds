@@ -8,26 +8,22 @@
 #
 
 # Imports the provided dice.py module, as well as the built-in Random Module
-import dice, random
+import dice
+import random
 
 # Displays my details as per the PSP Assessment Requirements.
 print("File\t : casnj003_battle_p1.py")
 print("Author\t : Noah Casey")
 print("This is my own work as defined by the\nUniversity's Academic Misconduct Policy.", end="\n\n")
 
-game_counter = 0         # Keeps count of the amount of games played in succession (using Play Again)
-game_scores = [0,0,0]    # [Win, Draw, Loss]
-dragon_kills = 0         # Keeps count of the amount of times the Player kills the Dragon
+game_counter: int = 0               # Keeps count of the amount of games played in succession (using Play Again) -> type: int
+game_scores: list[int] = [0,0,0]    # [Win, Draw, Loss] -> type: list[int]
+dragon_kills: int = 0               # Keeps count of the amount of times the Player kills the Dragon -> type: int
 
-playing = input("Would you like to play Dragon Battleground [y|n]? ")
-
-if playing == "n":
-    print("\n\nNo worries... you live to battle another day... :)")
-elif playing != "y":
-    print("Please enter either 'y' or 'n'.", end="\n\n")
-
+playing: str = ""
 while playing != "y" and playing != "n":
     playing = input("Would you like to play Dragon Battleground [y|n]? ")
+
     if playing == "n":
         print("\n\nNo worries... you live to battle another day... :)")
     elif playing != "y":
@@ -39,15 +35,15 @@ while playing == "y":
     dragon_roll = [0, 0, 0, 0, 0]   # List containing the Dragon's randomly generated dice rolls
     
     # The below Die Counters follow the alignment:
-    #       [0, 0, 0, 0, 0, 0, 0]
-    #        0  1  2  3  4  5  6
-    # Element [0] of each list will not be utilised and is there
-    # to keep the alignment Die Number == 1 == Element [1]
+    #       [0, 0, 0, 0, 0, 0]
+    #        1  2  3  4  5  6
+    # Element [0] of each list will be used as though it is
+    # equal to the die number | Die Number == 1 == Element [0]
     #
     # Each element will be added to, according to the amount of times
     # it appears in the appropriate Roll list
-    player_die_counter = [0, 0, 0, 0, 0, 0, 0] 
-    dragon_die_counter = [0, 0, 0, 0, 0, 0, 0]
+    player_die_counter = [0, 0, 0, 0, 0, 0] 
+    dragon_die_counter = [0, 0, 0, 0, 0, 0]
     
     # Checks if this is the first run of the game
     #    TRUE = New Game    FALSE = Next Round
@@ -72,12 +68,10 @@ while playing == "y":
     print(f"Round: {rounds_played}", end="\n\n")
 
     # Populating the player roll
-    index = 0
-    while index < len(player_roll):
+    for index in range(len(player_roll)):
         roll = random.randint(1,6)
         player_roll[index] = roll
-        player_die_counter[roll] += 1
-        index += 1
+        player_die_counter[roll - 1] += 1
 
     print("Player rolled:")
     dice.display_dice(player_roll)
@@ -91,7 +85,7 @@ while playing == "y":
     # Determine Damage
     # Three of a Kind
     if 3 in player_die_counter:
-        if player_die_counter[1] == 3 or player_die_counter[3] == 3 or player_die_counter[5] == 3:
+        if player_die_counter[0] == 3 or player_die_counter[2] == 3 or player_die_counter[4] == 3:
             player_damage = 0
             print("-- Swing and miss - no damage inflicted!")
         else:
@@ -111,12 +105,10 @@ while playing == "y":
         dragon_health = 0
 
     # Populating the dragon roll
-    index = 0
-    while index < len(dragon_roll):
+    for index in range(len(dragon_roll)):
         roll = random.randint(1,6)
         dragon_roll[index] = roll
-        dragon_die_counter[roll] += 1
-        index += 1
+        dragon_die_counter[roll - 1] += 1
 
     print("Dragon rolled:")
     dice.display_dice(dragon_roll)
@@ -190,25 +182,18 @@ while playing == "y":
                 game_scores[1] += 1
             play_again_prompt = True
 
-    if play_again_prompt:
+    while play_again_prompt:
         play_again = input("\nPlay again [y|n]? ")
 
         if play_again == "y":
             first_play = True
+            play_again_prompt = False
+            game_counter += 1
         elif play_again == "n":
             playing = "n"
-        elif play_again != "y":
+            play_again_prompt = False
+        else:
             print("Please enter either 'y' or 'n'.")
-
-        while play_again != "y" and play_again != "n":
-            play_again = input("Play again [y|n]? ")
-            if play_again == "y":
-                first_play = True
-                game_counter += 1
-            elif play_again == "n":
-                playing = "n"
-            elif play_again != "y":
-                print("Please enter either 'y' or 'n'.")
 else:
     if not first_play:
         print("\nGame Summary")
