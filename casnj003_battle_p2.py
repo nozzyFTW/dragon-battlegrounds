@@ -77,7 +77,7 @@ def calculate_damage(roll: list[int]) -> int:
     die_counter = [0, 0, 0, 0, 0, 0]
     for value in roll:
         damage += value
-        die_counter[value - 1] += 1
+        die_counter[value] += 1
 
     # Three of a Kind
     if 3 in die_counter:

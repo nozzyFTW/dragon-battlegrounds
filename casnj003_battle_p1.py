@@ -84,7 +84,7 @@ while playing == "y":
     for index in range(len(player_roll)):
         roll = random.randint(1,6)
         player_roll[index] = roll
-        player_die_counter[roll - 1] += 1
+        player_die_counter[roll] += 1
 
     print("Player rolled:")
     dice.display_dice(player_roll)
@@ -98,7 +98,7 @@ while playing == "y":
     # Determine Damage
     # Three of a Kind
     if 3 in player_die_counter:
-        if player_die_counter[0] == 3 or player_die_counter[2] == 3 or player_die_counter[4] == 3:
+        if player_die_counter[1] == 3 or player_die_counter[3] == 3 or player_die_counter[5] == 3:
             player_damage = 0
             print("-- Swing and miss - no damage inflicted!")
         else:
@@ -122,7 +122,7 @@ while playing == "y":
     for index in range(len(dragon_roll)):
         roll = random.randint(1,6)
         dragon_roll[index] = roll
-        dragon_die_counter[roll - 1] += 1
+        dragon_die_counter[roll] += 1
 
     print("Dragon rolled:")
     dice.display_dice(dragon_roll)
@@ -135,7 +135,7 @@ while playing == "y":
     
     # Determine Damage
     # Three of a Kind
-    if 3 in dragon_die_counter or 4 in dragon_die_counter or 5 in dragon_die_counter:
+    if 3 in dragon_die_counter:
         if dragon_die_counter[1] == 3 or dragon_die_counter[3] == 3 or dragon_die_counter[5] == 3:
             dragon_damage = 0
             print("-- Swing and miss - no damage inflicted!")
