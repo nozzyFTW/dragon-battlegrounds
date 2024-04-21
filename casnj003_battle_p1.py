@@ -42,19 +42,19 @@ while playing != "y" and playing != "n":
     elif playing != "y":
         print("Please enter either 'y' or 'n'.", end="\n\n")
 
-first_play = True   # Sets the whether it is the first run through of the game
+first_play = True       # Sets the whether it is the first run through of the game
 while playing == "y":
     player_roll = [0, 0, 0, 0, 0]   # List containing the Player's randomly generated dice rolls
     dragon_roll = [0, 0, 0, 0, 0]   # List containing the Dragon's randomly generated dice rolls
     
     # The below Die Counters follow the alignment:
-    #       [0, 0, 0, 0, 0, 0]
-    #        1  2  3  4  5  6
+    #       [0, 0, 0, 0, 0, 0, 0]
+    #        0  1  2  3  4  5  6
     # Element [0] of each list will be used as though it is
-    # equal to the die number | Die Number == 1 == Element [0]
+    # equal to the die number | Die Number == 1 == Element [1]
     #
     # Each element will be added to, according to the amount of times
-    # it appears in the appropriate Roll list
+    # it appears in the appropriate Roll list.
     player_die_counter = [0, 0, 0, 0, 0, 0] 
     dragon_die_counter = [0, 0, 0, 0, 0, 0]
     
@@ -91,7 +91,7 @@ while playing == "y":
     print("\n")
     
     # Get sum of dice
-    player_damage = 0
+    player_damage = 0       # Keeps count of the sum of player_roll (to be multiplied accordingly)
     for value in player_roll:
         player_damage += value
     
@@ -114,6 +114,7 @@ while playing == "y":
     print(f"-- Player has dealt {player_damage} damage", end="\n\n")
     dragon_health -= player_damage
 
+    # Dragon's health cannot be less than zero (negative)
     if dragon_health < 0:
         dragon_health = 0
 
@@ -128,7 +129,7 @@ while playing == "y":
     print("\n")
 
     # Get sum of dice
-    dragon_damage = 0
+    dragon_damage = 0       # Keeps count of the sum of player_roll (to be multiplied accordingly)
     for value in dragon_roll:
         dragon_damage += value
     
@@ -150,6 +151,8 @@ while playing == "y":
     # IF no Pair or Three of a Kind, only print "-- Dragon has dealt..."
     print(f"-- Dragon has dealt {dragon_damage} damage", end="\n\n")
     player_health -= dragon_damage
+
+    # Player's health cannot be less than zero (negative)
     if player_health < 0:
         player_health = 0
 
