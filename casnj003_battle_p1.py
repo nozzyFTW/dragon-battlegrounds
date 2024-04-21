@@ -2,7 +2,19 @@
 # File: casnj003_battle_p1.py
 # Author: Noah Casey
 # Email Id: casnj003
-# Description: Dragon Battleground (created without the use of functions).
+# Description: Assignment 1 - Dragon Battleground - Part 1 - Created without the use of functions.
+#
+#              Dragon Battleground is a game where a player fights against a dragon, for as many
+#              rounds as the player requests (up to 5 or when one of the characters die). The
+#              damage dealt throughout the game is determined through the rolling of 5 dice.
+#              
+#              If 3 of the same number dice are rolled, then triple the sum of the roll will be
+#              dealt. If 2 of the same number dice are rolled, then double the sum of the rol
+#              is dealt. Otherwise the sum of the roll is the damage dealt.
+#
+#              To twist things up, if on a Three of a Kind roll, odds (1/3/5) are rolled, then
+#              the character has swung, and missed the opponent.
+#
 # This is my own work as defined by the University's
 # Academic Misconduct policy.
 #
@@ -14,13 +26,14 @@ import random
 # Displays my details as per the PSP Assessment Requirements.
 print("File\t : casnj003_battle_p1.py")
 print("Author\t : Noah Casey")
+print("Email ID : casnj003")
 print("This is my own work as defined by the\nUniversity's Academic Misconduct Policy.", end="\n\n")
 
-game_counter: int = 0               # Keeps count of the amount of games played in succession (using Play Again) -> type: int
-game_scores: list[int] = [0,0,0]    # [Win, Draw, Loss] -> type: list[int]
-dragon_kills: int = 0               # Keeps count of the amount of times the Player kills the Dragon -> type: int
+game_counter = 0            # Keeps count of the amount of games played in succession (using Play Again) -> type: int
+game_scores = [0,0,0]       # [Win, Draw, Loss] -> type: list[int]
+dragon_kills = 0            # Keeps count of the amount of times the Player kills the Dragon -> type: int
 
-playing: str = ""
+playing = ""        # Defines blank variable to allow efficient Data Validation
 while playing != "y" and playing != "n":
     playing = input("Would you like to play Dragon Battleground [y|n]? ")
 
@@ -182,6 +195,8 @@ while playing == "y":
                 game_scores[1] += 1
             play_again_prompt = True
 
+    # IF TRUE means that the game is over and no more rounds are to be played
+    # IF FALSE means that there are more rounds to be played
     while play_again_prompt:
         play_again = input("\nPlay again [y|n]? ")
 
@@ -194,13 +209,13 @@ while playing == "y":
             play_again_prompt = False
         else:
             print("Please enter either 'y' or 'n'.")
-else:
-    if not first_play:
-        print("\nGame Summary")
-        print("============")
-        print(f"You played {game_counter} games")
-        print(f"\t|--> Games won:\t\t {game_scores[0]}")
-        print(f"\t|--> Games lost:\t {game_scores[2]}")
-        print(f"\t|--> Games drawn:\t {game_scores[1]}")
-        print(f"\t|--> Dragons killed:\t {dragon_kills}")
-        print("\nThanks for playing!")
+
+if not first_play:
+    print("\nGame Summary")
+    print("============")
+    print(f"You played {game_counter} games")
+    print(f"\t|--> Games won:    {game_scores[0]}")
+    print(f"\t|--> Games lost:   {game_scores[2]}")
+    print(f"\t|--> Games drawn:  {game_scores[1]}")
+    print(f"\t|--> Dragons killed:  {dragon_kills}")
+    print("\nThanks for playing!")
